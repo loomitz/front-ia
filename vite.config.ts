@@ -16,7 +16,7 @@ export default defineConfig({
     host: true,
     port: 3535,
     strictPort: true,
-    origin: "https://urolog-ia.loo.casa",
+    origin: "https://urologia.loo.casa",
     hmr: {
       clientPort: 443,
       timeout: 3,

@@ -1,22 +1,25 @@
 <template>
-  <div class="bg-gradient-to-bl from-slate-100 to-slate-400 dark:from-zinc-700 dark:to-zinc-900 min-h-screen realative">
-  <!-- <div class="bg-main-pattern bg-[length:20.8rem] bg-center bg-opacity-15 bg-repeat-round min-h-screen z-10" /> -->
+  <div class="bg-gradient-to-bl from-zinc-300 to-zinc-500 dark:from-zinc-700 dark:to-zinc-900 min-h-screen overflow-hidden realative">
+
     <RouterView/>
   
-    <dark-icon v-if="isDark" class="absolute top-5 right-5 w-6 h-6 cursor-pointer text-white" @click="toggleDark()" />
-    <light-icon v-else class="absolute top-5 right-5 w-6 h-6 cursor-pointer text-zinc-900" @click="toggleDark()" />
   </div>
 
 </template>
 
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
-import { useDark, useToggle } from '@vueuse/core'
-import darkIcon from '@/assets/icons/darkIcon.svg?component'
-import lightIcon from '@/assets/icons/lightIcon.svg?component'
+import { watch } from 'vue'
+import { useLocalStorage } from '@vueuse/core';
 
- const isDark = useDark()
- const toggleDark = useToggle(isDark)
 
+const router = useRouter()
+const token = useLocalStorage('token', null)
+
+watch(token, (newValue) => {
+  if (!newValue) {
+    router.push('/login')
+  }
+})
 
 </script>

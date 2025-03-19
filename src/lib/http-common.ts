@@ -27,7 +27,6 @@ const authConfig = () => {
         withCredentials: true,
         headers: {
             "Content-Type": "x-www-form-urlencoded",
-            Authorization: `Bearer ${token.value}`,
         },
     };
 }
@@ -35,3 +34,19 @@ const authConfig = () => {
 export const authHttp = axios.create(authConfig());
 
 export const http = axios.create(baseConfig());
+
+http.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        if (error.response && error.response.status === 400) {
+            const responseData = error.response.data;
+            if (responseData.detail === 'Invalid token') {
+              token.value = null;
+              console.log('Token eliminado debido a respuesta 400 con "Invalid token"');
+            }
+          }
+            return Promise.reject(error);
+    }
+);
